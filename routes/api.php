@@ -1,8 +1,12 @@
 <?php
 
+// use App\Http\Controllers\Admin\AuthController;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Donation_typeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +33,8 @@ Route::post('/insert_type', [Donation_typeController::class, 'inserttype']);
 Route::get('/get_donation_types', [Donation_typeController::class, 'getAllData']);
 
 Route::post('/insert_company_data', [HomeController::class, 'insertcompanedata']);
+
+
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
@@ -38,7 +44,7 @@ Route::group([
     Route::post('logout', [AuthController::class,'logout']);
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', [AuthController::class,'me']);
-    Route::delete('delete_user/{id}',[AuthController::class,'delete_user']);
-    Route::put('update_user',[AuthController::class,'update_user']);
+    Route::delete('delete_user/{id}',[UserController::class,'delete_user']);
+    Route::put('update_user',[UserController::class,'update_user']);
 
 });
