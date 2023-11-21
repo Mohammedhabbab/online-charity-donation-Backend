@@ -3,9 +3,11 @@
 // use App\Http\Controllers\Admin\AuthController;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ComplaintsController;
 use App\Http\Controllers\Donation_typeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ServicesController;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,18 +23,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auths')->get('/users', function (Request $request) {
-    return $request->user();
-});
+ Route::middleware('auths')->get('/users', function (Request $request) {
+     return $request->user();
+ });
+ 
+
+
+
 Route::post('register', [AuthController::class,'register']);
 Route::get('approve/{id}', [AuthController::class,'approve']);
 //Route::get('register/{id}', [AuthController::class,'register']);
 Route::post('login', [AuthController::class,'login']);
 
-Route::post('/insert_type', [Donation_typeController::class, 'inserttype']);
-Route::get('/get_donation_types', [Donation_typeController::class, 'getAllData']);
 
+
+ Route::post('/insert_service', [ServicesController::class, 'store']);
+Route::post('/insert_complain', [ComplaintsController::class, 'store']);
+Route::get('/get_complain', [ComplaintsController::class, 'index']);
+Route::get('/get_services', [ServicesController::class, 'index']);
 Route::post('/insert_company_data', [HomeController::class, 'insertcompanedata']);
+
+
 
 
 Route::group([
