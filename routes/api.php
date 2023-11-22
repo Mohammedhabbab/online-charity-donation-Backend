@@ -23,12 +23,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
- Route::middleware('auths')->get('/users', function (Request $request) {
-     return $request->user();
- });
- 
-
-
+Route::middleware('auths')->get('/users', function (Request $request) {
+    return $request->user();
+});
 
 Route::post('register', [AuthController::class,'register']);
 Route::get('approve/{id}', [AuthController::class,'approve']);
