@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('donation_types', function (Blueprint $table) {
+        Schema::create('complaints', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('description');
-            $table->string('image')->nullable();
-            
-            
+            $table->string('name');
+            $table->string('email')->default('x@x.x');
+            $table->string('problem');
+            $table->text('message');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('donation_types');
+        Schema::dropIfExists('complaints');
     }
 };
