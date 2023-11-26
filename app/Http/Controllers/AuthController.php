@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Models\Users;
-use Illuminate\Support\Facades\Auth;
+//use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\Models\User;
+//use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -24,20 +24,20 @@ class AuthController extends Controller
         $user = new Users();
         $user->full_name = $data['full_name'];
         $user->mobile_number=$data['mobile_number'];
-        $user->email = $data['email'];
-        $user->password = Hash::make($data['password']);
-        $user->address =$data['address'];
-        $user->gender =$data['gender'];
+        $user->email= $data['email'];
+        $user->password= Hash::make($data['password']);
+        $user->address=$data['address'];
+        $user->gender=$data['gender'];
+        // Set a default value of 0 for 'status' when registering
+        $user->status = 0;
 
         $user->save();
-        
-        
-           
 
-        return response()->json("success",200);
+        return response()->json("success", 200);
     }
 
-    
+  
+
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -47,6 +47,9 @@ class AuthController extends Controller
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+        // Set 'status' to 1 when the user is signed in
+        $user->status = 1;
+        $user->save();
         $token = JWTAuth::attempt($credentials);
         return $this->respondWithToken($token);
     }

@@ -31,17 +31,28 @@ class ServicesController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $type = new Services();
-        
-        $type->title = $data['title'];
-        $type->description=$data['description'];
-        $type->url = $data['url'];
-        $type->image = $data['image'];
-        $type->save();
-        //$insertedData = Donation_types::create($data); // Replace YourModel with the actual model name
+         
 
-        return response()->json(['message' => 'Data inserted successfully','data' => $type], 201);
+    // Handle file upload
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('uploads'), $imageName);
+
+        // Save the image path in the database
+        $data['image'] = 'http://localhost:8000/uploads/' . $imageName;
     }
+
+    // Create and save the Services model
+    $type = new Services();
+    $type->title = $data['title'];
+    $type->description = $data['description'];
+    $type->url = $data['url'];
+    $type->image = $data['image'];
+    $type->save();
+
+    return response()->json(['message' => 'Data inserted successfully', 'data' => $type], 201);
+}
 
     /**
      * Display the specified resource.

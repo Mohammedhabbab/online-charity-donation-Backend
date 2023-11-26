@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('address');
             //$table->integer('id_card');
-            $table->boolean('status')->default(0);
+            $table->boolean('status');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('dividable_donations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('full_price');
+            $table->integer('total_cost');
             $table->integer('charity_id');
-            $table->integer('completion_percentage');
+            $table->integer('amount_paid');
             $table->string('priority');
             $table->string('overview');
+            $table->timestamp('expriation_date');
             $table->timestamps();
         });
     }
