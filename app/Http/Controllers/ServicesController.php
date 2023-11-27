@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Storage;
 use App\Models\Services;
 use Illuminate\Http\Request;
 
@@ -31,28 +31,26 @@ class ServicesController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        $type = new Services();
+        
+        $type->title = $data['title'];
+        $type->description=$data['description'];
+        $type->url = $data['url'];
+        if($request->hasFile('profile_image')){
+            $file=$request->file('profile_image');
+            $extention=$file->getClientOriginalExtension();
+            $filename=time().'.'.$extention;
+            //$file->move('public/storge/images',$filename);
+            $file = Storage::put('public/storge/images', $request->file('profile_image'));
+            $path = Storage::url($file);
          
+            $type->profile_image=$path;
+        }
+        $type->save();
+        //$insertedData = Donation_types::create($data); // Replace YourModel with the actual model name
 
-    // Handle file upload
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('uploads'), $imageName);
-
-        // Save the image path in the database
-        $data['image'] = 'http://localhost:8000/uploads/' . $imageName;
+        return response()->json(['message' => 'Data inserted successfully','data' => $type], 201);
     }
-
-    // Create and save the Services model
-    $type = new Services();
-    $type->title = $data['title'];
-    $type->description = $data['description'];
-    $type->url = $data['url'];
-    $type->image = $data['image'];
-    $type->save();
-
-    return response()->json(['message' => 'Data inserted successfully', 'data' => $type], 201);
-}
 
     /**
      * Display the specified resource.

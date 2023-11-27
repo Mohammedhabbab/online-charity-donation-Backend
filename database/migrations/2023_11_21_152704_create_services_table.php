@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('url')->default(0);
-            $table->string('image')->nullable();
+            $table->string('profile_image');
             $table->timestamps();
         });
     }

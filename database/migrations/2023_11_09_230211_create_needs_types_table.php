@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('needs_types', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
+            $table->string('profile_image');
             $table->string('type');
-            $table->boolean('status');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }
