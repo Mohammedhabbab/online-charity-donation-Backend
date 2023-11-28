@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('needs', function (Blueprint $table) {
             $table->id();
             $table->integer('needs_type_id');
+            $table->string('image');
             $table->integer('charity_id');
             $table->integer('total_count');
             $table->integer('count');

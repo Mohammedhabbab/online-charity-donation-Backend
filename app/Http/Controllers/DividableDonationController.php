@@ -28,11 +28,12 @@ class DividableDonationController  extends Controller
         $data = $request->all();
         $type = new Dividable_donations();
         $type->name = $data['name'];
-        $type->overview = $data['overview'];
+        
         $type->total_cost = $data['total_cost'];
         $type->amount_paid = $data['amount_paid'];
         $type->charity_id = $data['charity_id'];
         $type->priority = $data['priority'];
+        $type->overview = $data['overview'];
         $type->expriation_date = $data['expriation_date'];
         $type->save();
 
@@ -54,9 +55,21 @@ class DividableDonationController  extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Dividable_donations $Dividable_donations)
+    public function update(Request $request)
     {
-        //
+        $record = Dividable_donations::find($request->id);
+
+        // Get all data from the request
+        $data = $request->all();
+
+        // Update each field dynamically
+        foreach ($data as $key => $value) {
+            $record->$key = $value;
+        }
+
+        $record->save();
+
+        return response()->json(['message' => 'Record updated successfully', 'data' => $record], 200);
     }
 
     /**
