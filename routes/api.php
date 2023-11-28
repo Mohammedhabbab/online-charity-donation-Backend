@@ -3,6 +3,7 @@
 // use App\Http\Controllers\Admin\AuthController;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BeneficiariesController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\ComplaintsController;
 use App\Http\Controllers\Donation_typeController;
@@ -58,6 +59,8 @@ Route::post('/inser_needs', [NeedsController::class, 'store']);
 Route::get('/get_needs', [NeedsController::class, 'index']);
 Route::post('/insert_hero', [HeroSectionController::class, 'store']);
 Route::get('/get_hero', [HeroSectionController::class, 'index']);
+Route::post('/insert_beneficiar',[BeneficiariesController::class, 'store']);
+Route::get('/get_beneficiar', [BeneficiariesController::class, 'index']);
 
 
 Route::group([

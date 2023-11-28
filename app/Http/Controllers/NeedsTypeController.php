@@ -18,17 +18,15 @@ class NeedsTypeController extends Controller
         $type = new Needs_types;
         $type->type=$request->input('type');
         $type->status=$request->input('status');
-        if($request->hasFile('profile_image')){
-            $file=$request->file('profile_image');
-            $extention=$file->getClientOriginalExtension();
-            $filename=time().'.'.$extention;
-            //$file->move('public/storge/images',$filename);
-            $file = Storage::put('public/storge/images', $request->file('profile_image'));
-            $path = Storage::url($file);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads'), $imageName);
+
          
-            $type->profile_image=$path;
+            $data['image'] = 'http://localhost:8000/uploads/' . $imageName;
         }
-        
+        $type->image = $data['image'];
         $type->save();
         // return redirect()->back()->with('status','needs type image added sucss');
         return response()->json(['message' => 'Data inserted successfully','data' => $type], 201);

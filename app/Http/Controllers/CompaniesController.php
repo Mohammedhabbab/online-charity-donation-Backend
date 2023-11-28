@@ -17,16 +17,17 @@ class CompaniesController extends Controller
     {
         $comp = new Company;
         
-        if($request->hasFile('logo')){
-            $file=$request->file('logo');
-            $extention=$file->getClientOriginalExtension();
-            $filename=time().'.'.$extention;
-            //$file->move('public/storge/images',$filename);
-            $file = Storage::put('public/storge/images', $request->file('logo'));
-            $path = Storage::url($file);
+        
+
+        if ($request->hasFile('logo')) {
+            $image = $request->file('logo');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads'), $imageName);
+
          
-            $comp->logo=$path;
+            $data['logo'] = 'http://localhost:8000/uploads/' . $imageName;
         }
+        $comp->logo = $data['logo'];
         $comp->name=$request->input('name');
         $comp->email=$request->input('email');
         $comp->total_donations=$request->input('total_donations');

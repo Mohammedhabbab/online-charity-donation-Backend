@@ -23,15 +23,15 @@ class NeedsController extends Controller
         $needs->count=$request->input('count');
         $needs->price_per_item=$request->input('price_per_item');  
         $needs->total_amount=$request->input('total_amount');
-        if($request->hasFile('image')){
-            $file=$request->file('image');
-            $extention=$file->getClientOriginalExtension();
-            $filename=time().'.'.$extention;
-            $file = Storage::put('public/storge/images', $request->file('image'));
-            $path = Storage::url($file);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads'), $imageName);
+
          
-            $needs->image=$path;
+            $data['image'] = 'http://localhost:8000/uploads/' . $imageName;
         }
+        $needs->image = $data['image'];
         $needs->save();
         // return redirect()->back()->with('status','needs image added sucss');
         return response()->json(['message' => 'Data inserted successfully'], 201);

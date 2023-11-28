@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('needs_types', function (Blueprint $table) {
             $table->id();
-            $table->string('profile_image');
+            $table->string('image');
             $table->string('type');
             $table->boolean('status')->default(1);
             $table->timestamps();
