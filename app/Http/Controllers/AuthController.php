@@ -24,13 +24,14 @@ class AuthController extends Controller
         $user = new Users();
         $user->full_name = $data['full_name'];
         $user->mobile_number=$data['mobile_number'];
+        $user->telephone_number=$data['telephone_number'];
         $user->email= $data['email'];
         $user->password= Hash::make($data['password']);
         $user->address=$data['address'];
         $user->gender=$data['gender'];
-        // Set a default value of 0 for 'status' when registering
-        $user->status = 0;
-
+        $user->type_of_user=$data['type_of_user'];
+        $user->status=$data['status'];
+        $user->types_of_existing_donations=$data['types_of_existing_donations'];
         $user->save();
 
         return response()->json("success", 200);
@@ -47,11 +48,25 @@ class AuthController extends Controller
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        // Set 'status' to 1 when the user is signed in
-        $user->status = 1;
-        $user->save();
+        
         $token = JWTAuth::attempt($credentials);
         return $this->respondWithToken($token);
+        //return view('welcome', $token);
+    }
+    public function direct()
+    {
+        //$user = response()->json(auth()->user());
+
+        $type = response()->json(auth()->user()->type_of_user);
+        //return response()->json("user1");
+           if($type==response()->json("user")){
+               return view('welcome');
+               
+           }
+          else{
+              return view('index');
+          }
+
     }
     public function me()
     {

@@ -20,6 +20,9 @@ return new class extends Migration
             $table->integer('phone_number');
             $table->string('address');
             $table->string('needy_type');
+            $table->String('monthly_need')->nullable();
+            $table->String('name_of_school')->nullable();
+            $table->String('Educational_level')->nullable();
             $table->integer('charity_id');
             $table->string('overview');
             $table->boolean('status');

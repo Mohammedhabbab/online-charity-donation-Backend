@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Needs;
+use App\Models\Needs_types;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,12 @@ class NeedsController extends Controller
 {
     public function index()
     {
-        $data = Needs::all(); // Replace YourModel with the actual model name
+        //$data = Needs::all(); // Replace YourModel with the actual model name
 
-    return response()->json($data, 200);
+        $needs = Needs::with('needs_type')->get();
+        $needs_types = Needs_types::with('needs')->get();
+    //return response()->json($data, 200);
+    //return view('index' , compact('needs', 'needs_types'));
     }
     public function store(Request $request)
     {

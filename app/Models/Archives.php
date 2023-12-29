@@ -20,9 +20,9 @@ class Archives extends Model
     {
         return $this->belongsTo(Beneficiaries::class,'Beneficiaries_id','id');
     }
-    // public function donation_type():BelongsTo
-    // {
-    //     return $this->belongsTo(Donation_types::class,'donation_type_id','id');
-    // }
+     public function service():BelongsTo
+     {
+         return $this->belongsTo(Services::class,'donation_type_id','id');
+     }
     use HasFactory;
 }
