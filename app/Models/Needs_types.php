@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Needs_types extends Model
 {
-    public function need(): HasMany
+    public function needs(): HasMany
     {
         return $this->hasMany(Needs::class,'needs_type_id','id');
     }

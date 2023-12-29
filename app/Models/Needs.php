@@ -15,7 +15,7 @@ class Needs extends Model
         return $this->belongsTo(Charites::class,'charity_id','id');
     }
 
-    public function needtype():BelongsTo
+    public function needs_type():BelongsTo
     {
         return $this->belongsTo(Needs_types::class,'needs_type_id','id');
     }

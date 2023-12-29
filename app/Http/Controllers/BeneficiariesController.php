@@ -32,4 +32,6 @@ class BeneficiariesController extends Controller
 
         return response()->json(['message' => 'Data inserted successfully', 'data' => $type], 201);
     }
+
+    
 }
