@@ -5,6 +5,7 @@ use App\Models\Beneficiaries;
 use App\Models\Dividable_donations;
 use App\Models\Needs;
 use App\Models\Academic_fields;
+use App\Models\Services;
 use Illuminate\Http\Request;
 
 class CharitesController extends Controller
@@ -91,6 +92,48 @@ class CharitesController extends Controller
     
         return response()->json(['beneficiaries' => $beneficiaries], 200);
     }
+
+    public function getNeedyCountByCharity($charityId)
+    {
+        $services = Services::pluck('title'); // Assuming 'type' is the column representing the service type
+
+        $counts = [];
+
+        foreach ($services as $serviceType) {
+            $needyCount = Beneficiaries::where('charity_id', $charityId)
+                ->whereHas('service', function ($query) use ($serviceType) {
+                    $query->where('title', $serviceType);
+                })
+                ->count();
+
+                if ($needyCount > 0) {
+                    $counts[] = [ $serviceType];
+                }
+        }
+
+        return response()->json(['needy_counts' => $counts]);
+    }
+
+    public function getNeedsCountByCharity($charityId)
+    {
+        $services = Services::pluck('title'); // Assuming 'type' is the column representing the service type
+
+        $counts = [];
+
+        foreach ($services as $serviceType) {
+            $needyCount = Needs::where('charity_id', $charityId)
+                ->whereHas('service', function ($query) use ($serviceType) {
+                    $query->where('title', $serviceType);
+                })
+                ->count();
+
+                if ($needyCount > 0) {
+                    $counts[] = [ $serviceType];
+                }
+        }
+
+        return response()->json(['needs_counts' => $counts]);
+    }
         
     ////////////////////////////////////////////////////////////////
     public function register_Dividable_donations(Request $request)
@@ -171,12 +214,16 @@ class CharitesController extends Controller
     public function register_Needs(Request $request)
     {
         $needs= new Needs();
+        $needs->name_of_proudct=$request->input('name_of_proudct');
+        $needs->type_of_proudct=$request->input('type_of_proudct');
         $needs->needs_type_id=$request->input('needs_type_id');
         $needs->charity_id=$request->input('charity_id');
         $needs->total_count=$request->input('total_count');
-        $needs->count=$request->input('count');
+        $needs->available_count=$request->input('available_count');
         $needs->price_per_item=$request->input('price_per_item');  
         $needs->total_amount=$request->input('total_amount');
+        $needs->overview=$request->input('overview');
+        $needs->satatus= $request->input('status');
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
@@ -217,6 +264,15 @@ class CharitesController extends Controller
         $record->save();
 
         return response()->json(['message' => 'Record updated successfully', 'data' => $record], 200);
+    }
+
+    function get_needs_for_charity($charity_id,$type_of_proudct)
+    {
+        $beneficiaries = Needs::where('charity_id', $charity_id)
+            ->where('type_of_proudct', $type_of_proudct)
+            ->get();
+    
+        return response()->json(['beneficiaries' => $beneficiaries], 200);
     }
     ///////////////////////////////
     public function register_Academic_fields(Request $request)

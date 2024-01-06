@@ -15,9 +15,9 @@ class Needs extends Model
         return $this->belongsTo(Charites::class,'charity_id','id');
     }
 
-    public function needs_type():BelongsTo
+    public function service()
     {
-        return $this->belongsTo(Needs_types::class,'needs_type_id','id');
+        return $this->belongsTo(Services::class, 'needs_type', 'title');
     }
     use HasFactory;
 }
