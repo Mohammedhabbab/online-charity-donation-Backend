@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Services;
+use App\Models\Needs;
 use App\Models\Hero_section;
 use App\Models\Beneficiaries;
 use App\Models\Dividable_donations;
@@ -130,6 +131,13 @@ class AdminController extends Controller
     public function get_all_dividable_donations()
     {
         $data = Dividable_donations::all(); // Replace YourModel with the actual model name
+
+    return response()->json($data, 200);
+    }
+
+    public function get_needs()
+    {
+        $data = Needs::all(); // Replace YourModel with the actual model name
 
     return response()->json($data, 200);
     }

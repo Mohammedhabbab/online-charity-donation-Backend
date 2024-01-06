@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('needs', function (Blueprint $table) {
             $table->id();
-            $table->integer('needs_type_id');
+            $table->String('name_of_proudct');
+            $table->string('type_of_proudct');
+            $table->integer('needs_type');
             $table->string('image');
             $table->integer('charity_id');
             $table->integer('total_count');
-            $table->integer('count');
+            $table->integer('available_count');
             $table->integer('price_per_item');
             $table->integer('total_amount');
+            $table->string('overview');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

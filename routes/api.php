@@ -4,6 +4,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BeneficiariesController;
+use App\Http\Controllers\ArchivesController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\ComplaintsController;
 use App\Http\Controllers\CharitesController;
@@ -41,26 +42,26 @@ Route::post('login', [AuthController::class,'login']);
 
 
 
-Route::post('/insert_service', [ServicesController::class, 'store']);
+//Route::post('/insert_service', [ServicesController::class, 'store']);
 Route::post('/insert_complain', [ComplaintsController::class, 'store']);
 Route::get('/get_complain', [ComplaintsController::class, 'index']);
-Route::get('/get_services', [ServicesController::class, 'index']);
+//Route::get('/get_services', [ServicesController::class, 'index']);
 Route::post('/insert_company_data', [HomeController::class, 'insertcompanedata']);
 //Route::post('images', [ImageController::class, 'store']);
-Route::post('/insert_need_type',[NeedsTypeController::class, 'store']);
-Route::post('/insert_service',[ServicesController::class, 'store']);
+//Route::post('/insert_need_type',[NeedsTypeController::class, 'store']);
+//Route::post('/insert_service',[ServicesController::class, 'store']);
 Route::post('/insert_company',[CompaniesController::class,'store']);
 Route::get('/get_company',[CompaniesController::class,'index']);
-Route::get('/get_types',[NeedsTypeController::class,'index']);
-Route::post('/insert_dividable', [DividableDonationController::class, 'store']);
-Route::get('/get_dividable', [DividableDonationController::class, 'index']);
-Route::put('/update_dividable', [DividableDonationController::class, 'update']);
-Route::post('/inser_needs', [NeedsController::class, 'store']);
-Route::get('/get_needs', [NeedsController::class, 'index']);
-Route::post('/insert_hero', [HeroSectionController::class, 'store']);
-Route::get('/get_hero', [HeroSectionController::class, 'index']);
-Route::post('/insert_beneficiar',[BeneficiariesController::class, 'store']);
-Route::get('/get_beneficiar', [BeneficiariesController::class, 'index']);
+//Route::get('/get_types',[NeedsTypeController::class,'index']);
+//Route::post('/insert_dividable', [DividableDonationController::class, 'store']);
+//Route::get('/get_dividable', [DividableDonationController::class, 'index']);
+//Route::put('/update_dividable', [DividableDonationController::class, 'update']);
+//Route::post('/inser_needs', [NeedsController::class, 'store']);
+//Route::get('/get_needs', [NeedsController::class, 'index']);
+//Route::post('/insert_hero', [HeroSectionController::class, 'store']);
+//Route::get('/get_hero', [HeroSectionController::class, 'index']);
+//Route::post('/insert_beneficiar',[BeneficiariesController::class, 'store']);
+//Route::get('/get_beneficiar', [BeneficiariesController::class, 'index']);
 
 //////////////////////////////////////////////////////////////////////////
 Route::post('register_Beneficiaries', [CharitesController::class,'register_Beneficiaries']);
@@ -69,6 +70,9 @@ Route::put('update_Beneficiaries',[CharitesController::class,'update_Beneficiari
 Route::get('get_beneficiaries/{charity_id}/{needy_type}', [CharitesController::class, 'get_beneficiaries_for_charity']);
 Route::get('get_sponsored_beneficiaries/{charity_id}/{needy_type}', [CharitesController::class, 'get_sponsored_beneficiaries_for_charity']);
 Route::get('get_notsponsored_beneficiaries/{charity_id}/{needy_type}', [CharitesController::class, 'get_notsponsored_beneficiaries_for_charity']);
+Route::get('get_srvices_count_for_charity/{charity_id}',[CharitesController::class,'getNeedyCountByCharity']);
+Route::get('get_needs_count_for_charity/{charity_id}',[CharitesController::class,'getNeedsCountByCharity']);
+Route::get('get_all_donations_for_user/{users_id}', [ArchivesController::class, 'get_alldonations_for_user']);
 //////////////////////
 Route::post('register_Dividable_donations', [CharitesController::class,'register_Dividable_donations']);
 Route::delete('delete_Dividable_donations/{id}',[CharitesController::class,'delete_Dividable_donations']);
@@ -81,6 +85,7 @@ Route::get('get_notsponsored_Dividable/{charity_id}/{type}', [CharitesController
 Route::post('register_Needs', [CharitesController::class,'register_Needs']);
 Route::delete('delete_Needs/{id}',[CharitesController::class,'delete_Needs']);
 Route::put('update_Needs',[CharitesController::class,'update_Needs']);
+Route::get('get_needs_for_charity/{charity_id}/{type_of_proudct}',[CharitesController::class,'get_needs_for_charity']);
 ////////////////////
 Route::post('register_Academic_fields', [CharitesController::class,'register_Academic_fields']);
 Route::delete('delete_Academic_fields/{id}',[CharitesController::class,'delete_Academic_fields']);
@@ -90,12 +95,17 @@ Route::put('update_Academic_fields',[CharitesController::class,'update_Academic_
 Route::post('register_Services', [AdminController::class,'register_Services']);
 Route::delete('delete_Services/{id}',[AdminController::class,'delete_Services']);
 Route::put('update_Services',[AdminController::class,'update_Services']);
-Route::get('get_Beneficiaries', [AdminController::class, 'get_all_Beneficiaries']);
-Route::get('get_dividable_donations', [AdminController::class, 'get_all_dividable_donations']);
 ////////////////////////////////
 Route::post('register_Hero_section', [AdminController::class,'register_Hero_section']);
 Route::delete('delete_Hero_section/{id}',[AdminController::class,'delete_Hero_section']);
 Route::put('update_Hero_section',[AdminController::class,'update_Hero_section']);
+//////////////////////////
+Route::get('get_Beneficiaries', [AdminController::class, 'get_all_Beneficiaries']);
+Route::get('get_dividable_donations', [AdminController::class, 'get_all_dividable_donations']);
+Route::get('get_needs', [AdminController::class, 'get_needs']);
+
+
+
 
 Route::group([
     'middleware' => 'api',
