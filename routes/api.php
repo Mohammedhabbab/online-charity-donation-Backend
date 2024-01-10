@@ -66,17 +66,18 @@ Route::get('/get_company',[CompaniesController::class,'index']);
 //////////////////////////////////////////////////////////////////////////
 Route::post('register_Beneficiaries', [CharitesController::class,'register_Beneficiaries']);
 Route::delete('delete_Beneficiaries/{id}',[CharitesController::class,'delete_Beneficiaries']);
-Route::put('update_Beneficiaries',[CharitesController::class,'update_Beneficiaries']);
+Route::put('update_Beneficiaries/{id}',[CharitesController::class,'update_Beneficiaries']);
 Route::get('get_beneficiaries/{charity_id}/{needy_type}', [CharitesController::class, 'get_beneficiaries_for_charity']);
 Route::get('get_sponsored_beneficiaries/{charity_id}/{needy_type}', [CharitesController::class, 'get_sponsored_beneficiaries_for_charity']);
 Route::get('get_notsponsored_beneficiaries/{charity_id}/{needy_type}', [CharitesController::class, 'get_notsponsored_beneficiaries_for_charity']);
 Route::get('get_srvices_count_for_charity/{charity_id}',[CharitesController::class,'getNeedyCountByCharity']);
 Route::get('get_needs_count_for_charity/{charity_id}',[CharitesController::class,'getNeedsCountByCharity']);
 Route::get('get_all_donations_for_user/{users_id}', [ArchivesController::class, 'get_alldonations_for_user']);
+Route::get('get_all_donations_for_charity/{users_id}', [ArchivesController::class, 'getNeedyAndNeedsCountByCharity']);
 //////////////////////
 Route::post('register_Dividable_donations', [CharitesController::class,'register_Dividable_donations']);
 Route::delete('delete_Dividable_donations/{id}',[CharitesController::class,'delete_Dividable_donations']);
-Route::put('update_Dividable_donations',[CharitesController::class,'update_Dividable_donations']);
+Route::put('update_Dividable_donations/{id}',[CharitesController::class,'update_Dividable_donations']);
 Route::get('get_Dividable/{charity_id}/{type}', [CharitesController::class, 'get_Dividable_donations_for_charity']);
 Route::get('get_sponsored_Dividable/{charity_id}/{type}', [CharitesController::class, 'get_sponsored_Dividable_donations_for_charity']);
 Route::get('get_notsponsored_Dividable/{charity_id}/{type}', [CharitesController::class, 'get_notsponsored_Dividable_donations_for_charity']);
@@ -84,21 +85,21 @@ Route::get('get_notsponsored_Dividable/{charity_id}/{type}', [CharitesController
 /////////////////////
 Route::post('register_Needs', [CharitesController::class,'register_Needs']);
 Route::delete('delete_Needs/{id}',[CharitesController::class,'delete_Needs']);
-Route::put('update_Needs',[CharitesController::class,'update_Needs']);
+Route::put('update_Needs/{id}',[CharitesController::class,'update_Needs']);
 Route::get('get_needs_for_charity/{charity_id}/{type_of_proudct}',[CharitesController::class,'get_needs_for_charity']);
 ////////////////////
 Route::post('register_Academic_fields', [CharitesController::class,'register_Academic_fields']);
 Route::delete('delete_Academic_fields/{id}',[CharitesController::class,'delete_Academic_fields']);
-Route::put('update_Academic_fields',[CharitesController::class,'update_Academic_fields']);
+Route::put('update_Academic_fields/{id}',[CharitesController::class,'update_Academic_fields']);
 ///////////////////
 //////////////////
 Route::post('register_Services', [AdminController::class,'register_Services']);
 Route::delete('delete_Services/{id}',[AdminController::class,'delete_Services']);
-Route::put('update_Services',[AdminController::class,'update_Services']);
+Route::put('update_Services/{id}',[AdminController::class,'update_Services']);
 ////////////////////////////////
 Route::post('register_Hero_section', [AdminController::class,'register_Hero_section']);
 Route::delete('delete_Hero_section/{id}',[AdminController::class,'delete_Hero_section']);
-Route::put('update_Hero_section',[AdminController::class,'update_Hero_section']);
+Route::put('update_Hero_section/{id}',[AdminController::class,'update_Hero_section']);
 //////////////////////////
 Route::get('get_Beneficiaries', [AdminController::class, 'get_all_Beneficiaries']);
 Route::get('get_dividable_donations', [AdminController::class, 'get_all_dividable_donations']);

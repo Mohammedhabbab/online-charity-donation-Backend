@@ -43,9 +43,9 @@ class AdminController extends Controller
     }
   
     }
-    public function update_Services(Request $request)
+    public function update_Services(Request $request,$id)
     {
-        $record = Services ::find($request->id);
+        $record = Services ::find($id);
 
         // Get all data from the request
         $data = $request->all();
@@ -104,9 +104,9 @@ class AdminController extends Controller
     }
   
     }
-    public function update_Hero_section(Request $request)
+    public function update_Hero_section(Request $request,$id)
     {
-        $record = Hero_section ::find($request->id);
+        $record = Hero_section ::find($id);
 
         // Get all data from the request
         $data = $request->all();

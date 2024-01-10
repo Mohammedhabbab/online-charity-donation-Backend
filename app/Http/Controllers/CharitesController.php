@@ -47,9 +47,9 @@ class CharitesController extends Controller
     }
   
     }
-    public function update_Beneficiaries(Request $request)
+    public function update_Beneficiaries(Request $request,$id)
     {
-        $record = Beneficiaries ::find($request->id);
+        $record = Beneficiaries ::find($id);
 
         // Get all data from the request
         $data = $request->all();
@@ -164,9 +164,9 @@ class CharitesController extends Controller
     }
   
     }
-    public function update_Dividable_donations(Request $request)
+    public function update_Dividable_donations(Request $request,$id)
     {
-        $record = Dividable_donations ::find($request->id);
+        $record = Dividable_donations ::find($id);
 
         // Get all data from the request
         $data = $request->all();
@@ -249,9 +249,9 @@ class CharitesController extends Controller
     }
   
     }
-    public function update_Needs(Request $request)
+    public function update_Needs(Request $request,$id)
     {
-        $record = Needs ::find($request->id);
+        $record = Needs ::find($id);
 
         // Get all data from the request
         $data = $request->all();
@@ -300,9 +300,9 @@ class CharitesController extends Controller
     }
   
     }
-    public function update_Academic_fields(Request $request)
+    public function update_Academic_fields(Request $request,$id)
     {
-        $record = Academic_fields ::find($request->id);
+        $record = Academic_fields ::find($id);
 
         // Get all data from the request
         $data = $request->all();
@@ -316,4 +316,34 @@ class CharitesController extends Controller
 
         return response()->json(['message' => 'Record updated successfully', 'data' => $record], 200);
     }
+
+    //////////////////
+
+    public function getNeedyAndNeedsCountByCharity($charityId)
+{
+    $services = Services::pluck('title'); // Assuming 'title' is the column representing the service title
+
+    $counts = [];
+
+    foreach ($services as $serviceType) {
+        $needyCount = Beneficiaries::where('charity_id', $charityId)
+            ->whereHas('service', function ($query) use ($serviceType) {
+                $query->where('title', $serviceType);
+            })
+            ->count();
+
+        $needsCount = Needs::where('charity_id', $charityId)
+            ->whereHas('service', function ($query) use ($serviceType) {
+                $query->where('title', $serviceType);
+            })
+            ->count();
+
+        if ($needyCount > 0 || $needsCount > 0) {
+            $counts[$serviceType] = ['needy_count' => $needyCount, 'needs_count' => $needsCount];
+        }
+    }
+
+    return response()->json(['counts' => $counts]);
+}
+
 }
