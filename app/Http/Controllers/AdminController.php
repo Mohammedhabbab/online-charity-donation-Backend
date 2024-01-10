@@ -31,6 +31,12 @@ class AdminController extends Controller
         return response()->json("success", 200);
     
     }
+    public function index()
+    {
+        $data = Services::all(); // Replace YourModel with the actual model name
+
+    return response()->json($data, 200);
+    }
     function delete_Services($id){
 
         $user = Services::find($id);
@@ -91,6 +97,12 @@ class AdminController extends Controller
         $type->save();
 
         return response()->json(['message' => 'Data inserted successfully', 'data' => $type], 201);
+    }
+    public function index1()
+    {
+        $data = Hero_section::all(); // Replace YourModel with the actual model name
+
+    return response()->json($data, 200);
     }
     function delete_Hero_section($id){
 
