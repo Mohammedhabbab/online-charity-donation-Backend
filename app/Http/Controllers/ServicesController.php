@@ -45,6 +45,7 @@ class ServicesController extends Controller
             $data['image'] = 'http://localhost:8000/uploads/' . $imageName;
         }
         $type->image = $data['image'];
+        $type->shape=$data['shape'];
         $type->save();
         //$insertedData = Donation_types::create($data); // Replace YourModel with the actual model name
 
