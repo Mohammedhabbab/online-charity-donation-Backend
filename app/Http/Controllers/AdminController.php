@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Services;
+use App\Models\Needs;
 use App\Models\Hero_section;
 use App\Models\Beneficiaries;
 use App\Models\Dividable_donations;
@@ -30,6 +31,12 @@ class AdminController extends Controller
         return response()->json("success", 200);
     
     }
+    public function index()
+    {
+        $data = Services::all(); // Replace YourModel with the actual model name
+
+    return response()->json($data, 200);
+    }
     function delete_Services($id){
 
         $user = Services::find($id);
@@ -42,9 +49,9 @@ class AdminController extends Controller
     }
   
     }
-    public function update_Services(Request $request)
+    public function update_Services(Request $request,$id)
     {
-        $record = Services ::find($request->id);
+        $record = Services ::find($id);
 
         // Get all data from the request
         $data = $request->all();
@@ -91,6 +98,12 @@ class AdminController extends Controller
 
         return response()->json(['message' => 'Data inserted successfully', 'data' => $type], 201);
     }
+    public function index1()
+    {
+        $data = Hero_section::all(); // Replace YourModel with the actual model name
+
+    return response()->json($data, 200);
+    }
     function delete_Hero_section($id){
 
         $user = Hero_section::find($id);
@@ -103,9 +116,9 @@ class AdminController extends Controller
     }
   
     }
-    public function update_Hero_section(Request $request)
+    public function update_Hero_section(Request $request,$id)
     {
-        $record = Hero_section ::find($request->id);
+        $record = Hero_section ::find($id);
 
         // Get all data from the request
         $data = $request->all();
@@ -130,6 +143,13 @@ class AdminController extends Controller
     public function get_all_dividable_donations()
     {
         $data = Dividable_donations::all(); // Replace YourModel with the actual model name
+
+    return response()->json($data, 200);
+    }
+
+    public function get_needs()
+    {
+        $data = Needs::all(); // Replace YourModel with the actual model name
 
     return response()->json($data, 200);
     }
