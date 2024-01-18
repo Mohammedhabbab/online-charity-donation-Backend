@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->String('name_of_proudct');
             $table->string('type_of_proudct');
-            $table->integer('needs_type');
+            $table->string('needs_type');
             $table->string('image');
             $table->integer('charity_id');
             $table->integer('total_count');
