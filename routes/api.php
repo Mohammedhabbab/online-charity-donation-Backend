@@ -74,6 +74,7 @@ Route::get('get_srvices_count_for_charity/{charity_id}',[CharitesController::cla
 Route::get('get_needs_count_for_charity/{charity_id}',[CharitesController::class,'getNeedsCountByCharity']);
 Route::get('get_all_donations_for_user/{users_id}', [ArchivesController::class, 'get_alldonations_for_user']);
 Route::get('get_all_donations_for_charity/{users_id}', [ArchivesController::class, 'getNeedyAndNeedsCountByCharity']);
+Route::get('search_beneficiaries/{id}', [ArchivesController::class, 'search_beneficiaries']);
 //////////////////////
 Route::post('insert_dividable', [CharitesController::class,'register_Dividable_donations']);
 Route::delete('delete_Dividable_donations/{id}',[CharitesController::class,'delete_Dividable_donations']);
@@ -106,6 +107,9 @@ Route::get('/get_hero', [AdminController::class, 'index1']);
 Route::get('get_beneficiar', [AdminController::class, 'get_all_Beneficiaries']);
 Route::get('get_dividable_donations', [AdminController::class, 'get_all_dividable_donations']);
 Route::get('get_needs', [AdminController::class, 'get_needs']);
+//////////////////////
+Route::get('getProductsByType/{needs_type}', [CharitesController::class,'getProductsByType']);
+Route::get('/products/{needs_type}/{charity_id}', [CharitesController::class,'getProductsByTypeAndCharity']);
 
 
 
@@ -121,6 +125,6 @@ Route::group([
     Route::post('me', [AuthController::class,'me']);
     Route::post('direct', [AuthController::class,'direct']);
     Route::delete('delete_user/{id}',[UserController::class,'delete_user']);
-    Route::put('update_user',[UserController::class,'update_user']);
-
+    Route::put('update_user/{id}',[UserController::class,'update_user']);
+    Route::post('update_password',[UserController::class,'changePassword']);
 });

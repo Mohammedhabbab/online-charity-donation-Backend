@@ -216,14 +216,14 @@ class CharitesController extends Controller
         $needs= new Needs();
         $needs->name_of_proudct=$request->input('name_of_proudct');
         $needs->type_of_proudct=$request->input('type_of_proudct');
-        $needs->needs_type_id=$request->input('needs_type_id');
+        $needs->needs_type=$request->input('needs_type');
         $needs->charity_id=$request->input('charity_id');
         $needs->total_count=$request->input('total_count');
         $needs->available_count=$request->input('available_count');
         $needs->price_per_item=$request->input('price_per_item');  
         $needs->total_amount=$request->input('total_amount');
         $needs->overview=$request->input('overview');
-        $needs->satatus= $request->input('status');
+        $needs->status= $request->input('status');
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
@@ -265,6 +265,8 @@ class CharitesController extends Controller
 
         return response()->json(['message' => 'Record updated successfully', 'data' => $record], 200);
     }
+     
+
 
     function get_needs_for_charity($charity_id,$type_of_proudct)
     {
@@ -345,5 +347,77 @@ class CharitesController extends Controller
 
     return response()->json(['counts' => $counts]);
 }
+/////--------------------------/////
+
+
+/////////////////////////////////////////
+
+public function getProductsByType($needs_type)
+{
+    $products = Needs::where('needs_type', $needs_type)->get();
+
+    if ($products->isEmpty()) {
+        return response()->json(['error' => 'Products not found.'], 404);
+    }
+
+    $response = [];
+
+    foreach ($products as $product) {
+        $remaining_count = $product->total_count - $product->available_count;
+        
+        // Calculate remaining amount based on the formula
+        $remaining_amount = ($product->total_amount / $product->total_count) * $remaining_count;
+
+        $response[] = [
+            'name_of_proudct' => $product->name_of_proudct,
+            'type_of_proudct' => $product->type_of_proudct,
+            'total_count' => $product->total_count,
+            'available_count' => $product->available_count,
+            'total_amount' => $product->total_amount,
+            'remaining_count' => $remaining_count,
+            'remaining_amount' => $remaining_amount,
+        ];
+    }
+
+    return response()->json($response);
+}
+
+
+
+public function getProductsByTypeAndCharity($needs_type, $charity_id)
+{
+    $products = Needs::where('needs_type', $needs_type)
+        ->where('charity_id', $charity_id)
+        ->get();
+
+    if ($products->isEmpty()) {
+        return response()->json(['error' => 'Products not found.'], 404);
+    }
+
+    $response = [];
+
+    foreach ($products as $product) {
+        $remaining_count = $product->total_count - $product->available_count;
+
+        // Calculate remaining amount based on the formula
+        $remaining_amount = ($product->total_amount / $product->total_count) * $remaining_count;
+
+        $response[] = [
+            'name_of_product' => $product->name_of_product,
+            'type_of_product' => $product->type_of_product,
+            'total_count' => $product->total_count,
+            'available_count' => $product->available_count,
+            'total_amount' => $product->total_amount,
+            'remaining_count' => $remaining_count,
+            'remaining_amount' => $remaining_amount,
+        ];
+    }
+
+    return response()->json($response);
+}
+
 
 }
+
+
+
