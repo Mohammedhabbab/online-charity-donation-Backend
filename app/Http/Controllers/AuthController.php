@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 //use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -19,8 +19,24 @@ class AuthController extends Controller
 
 
     function register(Request $req){
+        $validator = Validator::make($req->all(), [
+            'full_name' => 'required|regex:/^[\pL\s-]+$/u|string',
+            'mobile_number' => 'required|numeric',
+            'telephone_number' => 'nullable|numeric',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:6',
+            'address' => 'required|string',
+            'gender' => 'required|in:male,female',
+            'type_of_user' => 'required|regex:/^[\pL\s-]+$/u|string',
+            'status' => 'required|integer|in:0,1', 
+            'types_of_existing_donations' => 'nullable|string',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 400);
+        }
+    
         $data = $req->all();
-        // if($data["utype"]==1){
         $user = new Users();
         $user->full_name = $data['full_name'];
         $user->mobile_number=$data['mobile_number'];
