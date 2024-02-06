@@ -212,12 +212,10 @@ class AdminController extends Controller
         $result=$user->delete();
         if($result){
         return ["result"=>"record has been deleted".$id];
-    }
-    else{
-        return ["result"=>"delete has failed"];
-    }
-}
-
-    
+        }
+        else{
+            return ["result"=>"delete has failed"];
+        }
+    }    
 
 }
