@@ -24,7 +24,9 @@ class UserController extends Controller
     }
 
     public function update_user(Request $request, $id)
-{
+
+    {
+        dd(123);
     $record = Users::find($id);
 
     $data = $request->all();

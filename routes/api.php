@@ -111,6 +111,10 @@ Route::get('get_needs', [AdminController::class, 'get_needs']);
 //////////////////////
 Route::get('getProductsByType/{needs_type}', [CharitesController::class,'getProductsByType']);
 Route::get('/products/{needs_type}/{charity_id}', [CharitesController::class,'getProductsByTypeAndCharity']);
+/////////
+Route::get('get_charities', [AdminController::class, 'get_all_Charities']);
+Route::get('get_users', [AdminController::class, 'get_all_Users']);
+Route::delete('delete_user/{id}', [AdminController::class, 'delete_Users']);
 Route::post('/donate', [UserController::class,'makeDonation']);
 ////////////////////////
 Route::post('/create-payment/{amount}', [PaymentController::class, 'createPayment']);
@@ -122,6 +126,10 @@ Route::get('/charity-count', [AdminController::class, 'getCharityCount']);
 Route::get('/service-count', [AdminController::class, 'getServiceCount']);
 Route::get('/beneficiary-count', [AdminController::class, 'getBeneficiaryCount']);
 Route::get('/archive-count', [AdminController::class, 'getArchiveCount']);
+/////////
+Route::get('get_charities', [AdminController::class, 'get_all_Charities']);
+Route::get('get_users', [AdminController::class, 'get_all_Users']);
+Route::delete('delete_user/{id}', [AdminController::class, 'delete_Users']);
 
 
 
@@ -130,7 +138,8 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 
-], function ($router) {
+], function () {
+], function () {
     
     Route::post('logout', [AuthController::class,'logout']);
     Route::post('refresh', 'AuthController@refresh');

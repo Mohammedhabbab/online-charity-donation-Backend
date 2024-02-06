@@ -57,17 +57,22 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-        
+        $credentials = $request->only('email', 'password','type_of_user');
+
         $user = Users::where('email', $credentials['email'])->first();
 
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        if (!$user || !Hash::check($credentials['password'], $user->password)
+        ) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        
+
+        // Check if the user has the correct type_of_user
+        if ($user->type_of_user !== $credentials['type_of_user']) {
+            return response()->json(['error' => 'Invalid type of user'], 401);
+        }
+
         $token = JWTAuth::attempt($credentials);
         return $this->respondWithToken($token);
-        //return view('welcome', $token);
     }
     public function direct()
     {
