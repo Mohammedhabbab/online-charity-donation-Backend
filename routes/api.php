@@ -126,6 +126,10 @@ Route::get('/charity-count', [AdminController::class, 'getCharityCount']);
 Route::get('/service-count', [AdminController::class, 'getServiceCount']);
 Route::get('/beneficiary-count', [AdminController::class, 'getBeneficiaryCount']);
 Route::get('/archive-count', [AdminController::class, 'getArchiveCount']);
+/////////
+Route::get('get_charities', [AdminController::class, 'get_all_Charities']);
+Route::get('get_users', [AdminController::class, 'get_all_Users']);
+Route::delete('delete_user/{id}', [AdminController::class, 'delete_Users']);
 
 
 
@@ -134,6 +138,7 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 
+], function () {
 ], function () {
     
     Route::post('logout', [AuthController::class,'logout']);
