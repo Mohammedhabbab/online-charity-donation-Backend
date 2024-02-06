@@ -11,6 +11,7 @@ use App\Models\Beneficiaries;
 use App\Models\Dividable_donations;
 use Illuminate\Http\Request;
 
+
 class AdminController extends Controller
 {
     //
@@ -191,4 +192,32 @@ class AdminController extends Controller
 
         return response()->json(['archive_count' => $archiveCount]);
     }
+    public function get_all_Charities()
+    {
+        
+        $data = Users::where('type_of_user','charity')->get(); // Replace YourModel with the actual model name
+
+        return response()->json($data, 200);
+    }
+    public function get_all_Users()
+    {
+        $data = Users::where('type_of_user', 'user')->get(); // Replace YourModel with the actual model name
+
+        return response()->json($data, 200);
+    }
+
+    public function delete_Users($id){
+   
+        $user = Users::find($id);
+        $result=$user->delete();
+        if($result){
+        return ["result"=>"record has been deleted".$id];
+    }
+    else{
+        return ["result"=>"delete has failed"];
+    }
+}
+
+    
+
 }
