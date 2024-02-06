@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Archives;
 use App\Models\Services;
 use App\Models\Needs;
+use App\Models\Users;
 use App\Models\Hero_section;
 use App\Models\Beneficiaries;
 use App\Models\Dividable_donations;
@@ -152,5 +155,40 @@ class AdminController extends Controller
         $data = Needs::all(); // Replace YourModel with the actual model name
 
     return response()->json($data, 200);
+    }
+
+    public function getUserCount()
+    {
+        $userCount = Users::where('type_of_user', 'user')->count();
+
+        return response()->json(['user_count' => $userCount]);
+    }
+
+    public function getCharityCount()
+    {
+        $charityCount = Users::where('type_of_user', 'charity')->count();
+
+        return response()->json(['charity_count' => $charityCount]);
+    }
+
+    public function getServiceCount()
+    {
+        $serviceCount = Services::count();
+
+        return response()->json(['service_count' => $serviceCount]);
+    }
+
+    public function getBeneficiaryCount()
+    {
+        $beneficiaryCount = Beneficiaries::count();
+
+        return response()->json(['beneficiary_count' => $beneficiaryCount]);
+    }
+
+    public function getArchiveCount()
+    {
+        $archiveCount = Archives::count();
+
+        return response()->json(['archive_count' => $archiveCount]);
     }
 }

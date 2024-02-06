@@ -24,5 +24,17 @@ class Archives extends Model
      {
          return $this->belongsTo(Services::class,'donation_type_id','id');
      }
+
+     protected $fillable = [
+        'service',
+        'overview',
+        'total_amount_of_donation',
+        'users_id',
+        'users_name', // Add this line
+        'charity_id',
+        'Beneficiaries_id',
+        'Beneficiaries_name',
+    ];
+
     use HasFactory;
 }

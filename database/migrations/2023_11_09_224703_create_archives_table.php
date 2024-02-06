@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('archives', function (Blueprint $table) {
             $table->id();
-            $table->integer('donation_type_id');
+            $table->string('service');
             $table->string('overview');
             $table->integer('total_amount_of_donation');
             $table->integer('users_id');
+            $table->string('users_name');
+            $table->integer('charity_id');
             $table->integer('Beneficiaries_id');
+            $table->string('Beneficiaries_name');
             $table->timestamps();
         });
     }

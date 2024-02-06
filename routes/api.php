@@ -10,6 +10,7 @@ use App\Http\Controllers\ComplaintsController;
 use App\Http\Controllers\CharitesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NeedsTypeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServicesController;
@@ -110,6 +111,17 @@ Route::get('get_needs', [AdminController::class, 'get_needs']);
 //////////////////////
 Route::get('getProductsByType/{needs_type}', [CharitesController::class,'getProductsByType']);
 Route::get('/products/{needs_type}/{charity_id}', [CharitesController::class,'getProductsByTypeAndCharity']);
+Route::post('/donate', [UserController::class,'makeDonation']);
+////////////////////////
+Route::post('/create-payment/{amount}', [PaymentController::class, 'createPayment']);
+Route::get('/payment-callback/{paymentId}', [PaymentController::class, 'handleCallback']);
+Route::post('/reverse-payment/{paymentId}', [PaymentController::class, 'reversePayment']);
+////////////////////////
+Route::get('/user-count', [AdminController::class, 'getUserCount']);
+Route::get('/charity-count', [AdminController::class, 'getCharityCount']);
+Route::get('/service-count', [AdminController::class, 'getServiceCount']);
+Route::get('/beneficiary-count', [AdminController::class, 'getBeneficiaryCount']);
+Route::get('/archive-count', [AdminController::class, 'getArchiveCount']);
 
 
 

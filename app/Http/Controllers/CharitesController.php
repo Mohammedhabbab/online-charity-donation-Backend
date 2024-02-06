@@ -7,12 +7,36 @@ use App\Models\Needs;
 use App\Models\Academic_fields;
 use App\Models\Services;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CharitesController extends Controller
 {
     
     //
-    function register_Beneficiaries(Request $req){
+    
+
+    public function register_Beneficiaries(Request $req)
+    {
+        $validator = Validator::make($req->all(), [
+            'full_name' => 'required|regex:/^[\pL\s-]+$/u|string',
+            'mother_name' => 'required|regex:/^[\pL\s-]+$/u|string',
+            'age' => 'required|integer|min:0',
+            'gender' => 'required|in:male,female', // Adjust the possible gender values
+            'phone_number' => 'required|numeric',
+            'address' => 'required|string',
+            'needy_type' => 'required|alpha|string',
+            'monthly_need' => 'nullable|string',
+            'name_of_school' => 'nullable|string',
+            'Educational_level' => 'nullable|string',
+            'charity_id' => 'required|integer|min:1',
+            'overview' => 'required|alpha|string',
+            'status' => 'required|integer|in:0,1', // Adjust the possible status values
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['message' => 'غلط', 'errors' => $validator->errors()], 400);
+        }
+    
         $data = $req->all();
         $user = new Beneficiaries();
         $user->full_name = $data['full_name'];
@@ -23,17 +47,17 @@ class CharitesController extends Controller
         $user->address = $data['address'];
         $user->needy_type = $data['needy_type'];
         $user->monthly_need = $data['monthly_need'];
-        $user->name_of_school= $data['name_of_school'];
+        $user->name_of_school = $data['name_of_school'];
         $user->Educational_level = $data['Educational_level'];
         $user->charity_id = $data['charity_id'];
         $user->overview = $data['overview'];
         $user->status = $data['status'];
-
-        $user->save();
-
-        return response()->json("success", 200);
     
+        $user->save();
+    
+        return response()->json(['message' => 'success'], 200);
     }
+    
 
     function delete_Beneficiaries($id){
 
@@ -137,21 +161,37 @@ class CharitesController extends Controller
         
     ////////////////////////////////////////////////////////////////
     public function register_Dividable_donations(Request $request)
-    {
-        $data = $request->all();
-        $type = new Dividable_donations();
-        $type->type = $data['type'];
-        $type->total_cost = $data['total_cost'];
-        $type->amount_paid = $data['amount_paid'];
-        $type->charity_id = $data['charity_id'];
-        $type->priority = $data['priority'];
-        $type->overview = $data['overview'];
-        $type->expriation_date = $data['expriation_date'];
-        $type->status = $data['status'];
-        $type->save();
+{
+    $validator = Validator::make($request->all(), [
+        'type' => 'required|regex:/^[\pL\s-]+$/u|string',
+        'total_cost' => 'required|numeric|min:0',
+        'amount_paid' => 'required|numeric|min:0',
+        'charity_id' => 'required|integer|min:1',
+        'priority' => 'required|regex:/^[\pL\s-]+$/u|string',
+        'overview' => 'required|regex:/^[\pL\s-]+$/u|string',
+        'expriation_date' => 'required|date',
+        'status' => 'required|integer|in:0,1',
+    ]);
 
-        return response()->json("success", 200);
+    if ($validator->fails()) {
+        return response()->json(['message' => '  غلط في الادخال يرجى اعادة الادخال بطريقة صحيحة   '], 400);
     }
+
+    $type = new Dividable_donations();
+    $type->type = $request->input('type');
+    $type->total_cost = $request->input('total_cost');
+    $type->amount_paid = $request->input('amount_paid');
+    $type->charity_id = $request->input('charity_id');
+    $type->priority = $request->input('priority');
+    $type->overview = $request->input('overview');
+    $type->expriation_date = $request->input('expriation_date');
+    $type->status = $request->input('status');
+    $type->save();
+
+    return response()->json(['message' => 'success'], 200);
+}
+
+    
     function delete_Dividable_donations($id){
 
         $user = Dividable_donations::find($id);
@@ -212,31 +252,50 @@ class CharitesController extends Controller
 
     ////////////////////////////////////////////////////
     public function register_Needs(Request $request)
-    {
-        $needs= new Needs();
-        $needs->name_of_proudct=$request->input('name_of_proudct');
-        $needs->type_of_proudct=$request->input('type_of_proudct');
-        $needs->needs_type=$request->input('needs_type');
-        $needs->charity_id=$request->input('charity_id');
-        $needs->total_count=$request->input('total_count');
-        $needs->available_count=$request->input('available_count');
-        $needs->price_per_item=$request->input('price_per_item');  
-        $needs->total_amount=$request->input('total_amount');
-        $needs->overview=$request->input('overview');
-        $needs->status= $request->input('status');
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads'), $imageName);
+{
+    $validator = Validator::make($request->all(), [
+        'name_of_proudct' => 'required|regex:/^[\pL\s-]+$/u|string',
+        'type_of_proudct' => 'required|regex:/^[\pL\s-]+$/u|string',
+        'needs_type' => 'required|regex:/^[\pL\s-]+$/u|string',
+        'charity_id' => 'required|integer|min:1',
+        'total_count' => 'required|integer|min:0',
+        'available_count' => 'required|integer|min:0',
+        'price_per_item' => 'required|integer|min:0',
+        'total_amount' => 'required|integer|min:0',
+        'overview' => 'required|regex:/^[\pL\s-]+$/u|string',
+        'status' => 'required|integer|in:0,1',
+        'image' => 'sometimes',
+    ]);
 
-         
-            $data['image'] = 'http://localhost:8000/uploads/' . $imageName;
-        }
-        $needs->image = $data['image'];
-        $needs->save();
-        // return redirect()->back()->with('status','needs image added sucss');
-        return response()->json(['message' => 'Data inserted successfully'], 201);
+    if ($validator->fails()) {
+        return response()->json(['message' => ' غلط في الادخال يرجى اعادة الادخال بطريقة صحيحة', 'errors' => $validator->errors()], 400);
     }
+
+    $needs = new Needs();
+    $needs->name_of_proudct = $request->input('name_of_proudct');
+    $needs->type_of_proudct = $request->input('type_of_proudct');
+    $needs->needs_type = $request->input('needs_type');
+    $needs->charity_id = $request->input('charity_id');
+    $needs->total_count = $request->input('total_count');
+    $needs->available_count = $request->input('available_count');
+    $needs->price_per_item = $request->input('price_per_item');
+    $needs->total_amount = $request->input('total_amount');
+    $needs->overview = $request->input('overview');
+    $needs->status = $request->input('status');
+
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('uploads'), $imageName);
+
+        $needs->image = 'http://localhost:8000/uploads/' . $imageName;
+    }
+
+    $needs->save();
+
+    return response()->json(['message' => 'Data inserted successfully'], 201);
+}
+
     function delete_Needs($id){
 
         $user = Needs::find($id);
@@ -279,6 +338,16 @@ class CharitesController extends Controller
     ///////////////////////////////
     public function register_Academic_fields(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'academic_fields_name' => 'required|regex:/^[\pL\s-]+$/u|string',
+            'years_to_finish' => 'required|string',
+            'price_per_year' => 'required|string',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['message' => ' غلط في الادخال يرجى اعادة الادخال بطريقة صحيحة', 'errors' => $validator->errors()], 400);
+        
+        }
         $data = $request->all();
         $type = new Academic_fields();
         $type->academic_fields_name = $data['academic_fields_name'];
