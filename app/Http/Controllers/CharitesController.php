@@ -8,6 +8,7 @@ use App\Models\Academic_fields;
 use App\Models\Services;
 use Illuminate\Http\Request;
 
+
 class CharitesController extends Controller
 {
     
@@ -200,7 +201,7 @@ class CharitesController extends Controller
         return response()->json(['Dividable_donations' => $dividable], 200);
     }
 
-    function get_notsponsored_Dividable_donations_for_charity($charity_id,$type)
+    function fcharnotsponsored_Dividable_donations_for_charity($charity_id,$type)
     {
         $dividable = Dividable_donations::where('charity_id', $charity_id)
         ->where('type', $type)
@@ -416,7 +417,7 @@ public function getProductsByTypeAndCharity($needs_type, $charity_id)
     return response()->json($response);
 }
 
-
+   
 }
 
 
