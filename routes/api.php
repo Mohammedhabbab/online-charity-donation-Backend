@@ -144,7 +144,6 @@ Route::delete('delete_user/{id}', [AdminController::class, 'delete_Users']);
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
-
 ], function () {
 
     

@@ -230,6 +230,7 @@ class AdminController extends Controller
     {
 
         $user = Users::find($id);
+
         $result = $user->delete();
         if ($result) {
             return ["result" => "record has been deleted" . $id];
@@ -241,6 +242,16 @@ class AdminController extends Controller
     function get_all_Donations()
     {
         $data = Archives::all(); // Replace YourModel with the actual model name
+
+        $result=$user->delete();
+        if($result){
+        return ["result"=>"record has been deleted".$id];
+        }
+        else{
+            return ["result"=>"delete has failed"];
+        }
+    }    
+
 
         return response()->json($data, 200);
     }
