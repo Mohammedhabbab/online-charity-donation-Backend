@@ -114,6 +114,8 @@ Route::get('/products/{needs_type}/{charity_id}', [CharitesController::class,'ge
 /////////
 Route::get('get_charities', [AdminController::class, 'get_all_Charities']);
 Route::get('get_users', [AdminController::class, 'get_all_Users']);
+Route::get('get_donations', [AdminController::class, 'get_all_Donations']);
+
 Route::delete('delete_user/{id}', [AdminController::class, 'delete_Users']);
 Route::post('/donate', [UserController::class,'makeDonation']);
 ////////////////////////
@@ -125,6 +127,11 @@ Route::get('/user-count', [AdminController::class, 'getUserCount']);
 Route::get('/charity-count', [AdminController::class, 'getCharityCount']);
 Route::get('/service-count', [AdminController::class, 'getServiceCount']);
 Route::get('/beneficiary-count', [AdminController::class, 'getBeneficiaryCount']);
+Route::get('/needs-count', [AdminController::class, 'getNeedsCount']);
+Route::get('/complains-count', [AdminController::class, 'getComplainCount']);
+Route::get('/heros-count', [AdminController::class, 'getHeroCount']);
+
+
 Route::get('/archive-count', [AdminController::class, 'getArchiveCount']);
 /////////
 Route::get('get_charities', [AdminController::class, 'get_all_Charities']);
@@ -139,7 +146,7 @@ Route::group([
     'prefix' => 'auth'
 
 ], function () {
-], function () {
+
     
     Route::post('logout', [AuthController::class,'logout']);
     Route::post('refresh', 'AuthController@refresh');

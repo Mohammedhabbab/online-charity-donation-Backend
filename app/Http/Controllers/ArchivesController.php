@@ -22,4 +22,7 @@ class ArchivesController extends Controller
 
         return response()->json(['message' => 'Record search successfully', 'data' => $record], 200); 
         }
+
+  
+
 }
