@@ -26,7 +26,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6',
             'address' => 'required|string',
-            'gender' => 'required|in:male,female',
+            'gender' => 'nullable|in:ذكر,انثى',
             'type_of_user' => 'required|regex:/^[\pL\s-]+$/u|string',
             'status' => 'required|integer|in:0,1', 
             'types_of_existing_donations' => 'nullable|string',

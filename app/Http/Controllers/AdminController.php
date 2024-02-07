@@ -8,6 +8,7 @@ use App\Models\Needs;
 use App\Models\Users;
 use App\Models\Hero_section;
 use App\Models\Beneficiaries;
+use App\Models\Complaints;
 use App\Models\Dividable_donations;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,8 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     //
-    function register_Services(Request $request){
+    function register_Services(Request $request)
+    {
         $data = $request->all();
         $user = new Services();
         $user->title = $data['title'];
@@ -27,35 +29,33 @@ class AdminController extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('uploads'), $imageName);
 
-         
+
             $data['image'] = 'http://localhost:8000/uploads/' . $imageName;
         }
         $user->image = $data['image'];
         $user->save();
         return response()->json("success", 200);
-    
     }
     public function index()
     {
         $data = Services::all(); // Replace YourModel with the actual model name
 
-    return response()->json($data, 200);
+        return response()->json($data, 200);
     }
-    function delete_Services($id){
+    function delete_Services($id)
+    {
 
         $user = Services::find($id);
-        $result=$user->delete();
-        if($result){
-        return ["result"=>"record has been deleted".$id];
+        $result = $user->delete();
+        if ($result) {
+            return ["result" => "record has been deleted" . $id];
+        } else {
+            return ["result" => "delete has failed"];
+        }
     }
-    else{
-        return ["result"=>"delete has failed"];
-    }
-  
-    }
-    public function update_Services(Request $request,$id)
+    public function update_Services(Request $request, $id)
     {
-        $record = Services ::find($id);
+        $record = Services::find($id);
 
         // Get all data from the request
         $data = $request->all();
@@ -81,7 +81,7 @@ class AdminController extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('uploads'), $imageName);
 
-         
+
             $data['image'] = 'http://localhost:8000/uploads/' . $imageName;
         }
         //asset
@@ -90,11 +90,11 @@ class AdminController extends Controller
             $assetName = time() . '.' . $asset->getClientOriginalExtension();
             $asset->move(public_path('uploads'), $assetName);
 
-            
+
             $data['asset'] = 'http://localhost:8000/uploads/' . $assetName;
         }
 
-       
+
         $type = new Hero_section();
         $type->image = $data['image'];
         $type->asset = $data['asset'];
@@ -106,23 +106,22 @@ class AdminController extends Controller
     {
         $data = Hero_section::all(); // Replace YourModel with the actual model name
 
-    return response()->json($data, 200);
+        return response()->json($data, 200);
     }
-    function delete_Hero_section($id){
+    function delete_Hero_section($id)
+    {
 
         $user = Hero_section::find($id);
-        $result=$user->delete();
-        if($result){
-        return ["result"=>"record has been deleted".$id];
+        $result = $user->delete();
+        if ($result) {
+            return ["result" => "record has been deleted" . $id];
+        } else {
+            return ["result" => "delete has failed"];
+        }
     }
-    else{
-        return ["result"=>"delete has failed"];
-    }
-  
-    }
-    public function update_Hero_section(Request $request,$id)
+    public function update_Hero_section(Request $request, $id)
     {
-        $record = Hero_section ::find($id);
+        $record = Hero_section::find($id);
 
         // Get all data from the request
         $data = $request->all();
@@ -141,21 +140,21 @@ class AdminController extends Controller
     {
         $data = Beneficiaries::all(); // Replace YourModel with the actual model name
 
-    return response()->json($data, 200);
+        return response()->json($data, 200);
     }
 
     public function get_all_dividable_donations()
     {
         $data = Dividable_donations::all(); // Replace YourModel with the actual model name
 
-    return response()->json($data, 200);
+        return response()->json($data, 200);
     }
 
     public function get_needs()
     {
         $data = Needs::all(); // Replace YourModel with the actual model name
 
-    return response()->json($data, 200);
+        return response()->json($data, 200);
     }
 
     public function getUserCount()
@@ -186,6 +185,27 @@ class AdminController extends Controller
         return response()->json(['beneficiary_count' => $beneficiaryCount]);
     }
 
+    public function getNeedsCount()
+    {
+        $needsCount = Needs::count();
+
+        return response()->json(['needs_count' => $needsCount]);
+    }
+
+    public function getComplainCount()
+    {
+        $complainsCount = Complaints::count();
+
+        return response()->json(['complains_count' => $complainsCount]);
+    }
+
+    public function getHeroCount()
+    {
+        $heroCount = Hero_section::count();
+
+        return response()->json(['hero_count' => $heroCount]);
+    }
+
     public function getArchiveCount()
     {
         $archiveCount = Archives::count();
@@ -194,8 +214,8 @@ class AdminController extends Controller
     }
     public function get_all_Charities()
     {
-        
-        $data = Users::where('type_of_user','charity')->get(); // Replace YourModel with the actual model name
+
+        $data = Users::where('type_of_user', 'charity')->get(); // Replace YourModel with the actual model name
 
         return response()->json($data, 200);
     }
@@ -206,9 +226,23 @@ class AdminController extends Controller
         return response()->json($data, 200);
     }
 
-    public function delete_Users($id){
-   
+    public function delete_Users($id)
+    {
+
         $user = Users::find($id);
+
+        $result = $user->delete();
+        if ($result) {
+            return ["result" => "record has been deleted" . $id];
+        } else {
+            return ["result" => "delete has failed"];
+        }
+    }
+
+    function get_all_Donations()
+    {
+        $data = Archives::all(); // Replace YourModel with the actual model name
+
         $result=$user->delete();
         if($result){
         return ["result"=>"record has been deleted".$id];
@@ -218,4 +252,7 @@ class AdminController extends Controller
         }
     }    
 
+
+        return response()->json($data, 200);
+    }
 }

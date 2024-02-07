@@ -23,7 +23,7 @@ class CharitesController extends Controller
             'full_name' => 'required|regex:/^[\pL\s-]+$/u|string',
             'mother_name' => 'required|regex:/^[\pL\s-]+$/u|string',
             'age' => 'required|integer|min:0',
-            'gender' => 'required|in:male,female', // Adjust the possible gender values
+            'gender' => 'required|in:ذكر,انثى', // Adjust the possible gender values
             'phone_number' => 'required|numeric',
             'address' => 'required|string',
             'needy_type' => 'required|alpha|string',

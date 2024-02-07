@@ -85,10 +85,10 @@ public function makeDonation(Request $request)
 
     if (!$beneficiar) {
         return response()->json(['error' => 'Beneficiar not found.'], 404);
+   
     }
 
-    $beneficiar->status = 1;
-    $beneficiar->save();
+    
 
     // Get additional information for the archive
     $service = $beneficiar->needy_type;
@@ -105,15 +105,16 @@ public function makeDonation(Request $request)
     $charityId = $beneficiar->charity_id;
 
     // Find the charity and get additional information
-    $charity = Beneficiaries::find($charityId);
+    $charity = Users::find($charityId);
 
-    if (!$charity) {
-        return response()->json(['error' => 'Charity not found.'], 404);
-    }
+        if (!$charity) {
+            return response()->json(['error' => 'Charity not found.'], 404);
+        }
 
-    $charityId = $charity->charity_id;
-    $beneficiariesName = $beneficiar->full_name;
-
+        $charityId = $charity->id;
+        $beneficiariesName = $beneficiar->full_name;
+        $beneficiar->status = 1;
+        $beneficiar->save();
     // Create a new archive record
     Archives::create([
         'service' => $service,
