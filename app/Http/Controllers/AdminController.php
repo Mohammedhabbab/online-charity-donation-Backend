@@ -244,4 +244,30 @@ class AdminController extends Controller
 
         return response()->json($data, 200);
     }
+
+
+
+    public function update_status(Request $request, $id)
+    {
+        try {
+            $record = Users::find($id);
+
+            if (!$record) {
+                return response()->json(['error' => 'Record not found'], 404);
+            }
+
+            // Toggle the status from 0 to 1 or from 1 to 0
+            $record->status = $record->status == 0 ? 1 : 0;
+
+            $record->save();
+
+            return response()->json(['message' => 'Status updated successfully', 'data' => $record], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update status'], 500);
+        }
+    }
+
+
+
+
 }

@@ -71,6 +71,12 @@ class AuthController extends Controller
             return response()->json(['error' => 'Invalid type of user'], 401);
         }
 
+        if ($user->type_of_user === 'charity') {
+            if ($user->status !== 1) {
+                return response()->json(['error' => 'Your charity is not yet approved'], 401);
+            }
+        }
+
         $token = JWTAuth::attempt($credentials);
         return $this->respondWithToken($token);
     }

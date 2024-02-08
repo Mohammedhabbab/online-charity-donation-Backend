@@ -5,6 +5,7 @@ use App\Models\Users;
 use App\Models\Beneficiaries;
 use App\Models\Archives;
 use Illuminate\Http\Request;
+use App\Models\Needs;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,9 +25,7 @@ class UserController extends Controller
     }
 
     public function update_user(Request $request, $id)
-
     {
-        dd(123);
     $record = Users::find($id);
 
     $data = $request->all();
@@ -88,7 +87,7 @@ public function makeDonation(Request $request)
    
     }
 
-    
+       
 
     // Get additional information for the archive
     $service = $beneficiar->needy_type;
@@ -110,11 +109,11 @@ public function makeDonation(Request $request)
         if (!$charity) {
             return response()->json(['error' => 'Charity not found.'], 404);
         }
-
-        $charityId = $charity->id;
-        $beneficiariesName = $beneficiar->full_name;
         $beneficiar->status = 1;
         $beneficiar->save();
+        $charityId = $charity->id;
+        $beneficiariesName = $beneficiar->full_name;
+      
     // Create a new archive record
     Archives::create([
         'service' => $service,
@@ -129,6 +128,69 @@ public function makeDonation(Request $request)
 
     return response()->json(['message' => 'Donation successful']);
 }
+
+    public function makePurchase(Request $request)
+    {
+        // Extract relevant data from the request
+        $orderDetails = $request->input('orderDetails') ?? [];
+        $iteamsPurchased = $orderDetails['iteamsPurchased'] ?? [];
+        $totalAmount = $orderDetails['totalAmount'] ?? 0;
+
+        // Iterate over each item purchased
+        foreach ($iteamsPurchased as $item) {
+            // Check if the key 'Quantity' exists in the $item array
+            if (!isset($item['quantity'])) {
+                return response()->json(['error' => 'Quantity not provided for an item.'], 400);
+            }
+
+            $itemName = $item['itemName'];
+            $quantity = $item['quantity'];
+            $subtotal = $item['subtotal'];
+            $donater = $item['donater_id'];
+            $charity_id = $item['charity_id'];
+            $need_id = $item['id'];
+
+            
+
+            // Get the service value and overview from the Needs model
+            $needs = Needs::find($need_id);
+            if (!$needs) {
+                return response()->json(['error' => 'Need not found.'], 404);
+            }
+            $user = Users::find($donater);
+            if (!$needs) {
+                return response()->json(['error' => 'Need not found.'], 404);
+            }
+            $username = $user->full_name;
+
+            $charity = Users::find($charity_id);
+            if (!$needs) {
+                return response()->json(['error' => 'Need not found.'], 404);
+            }
+            $benename = $charity->full_name;
+            $service = $needs->needs_type;
+            $overview = $needs->overview;
+
+            // Create a new archive record for the item
+            Archives::create([
+                'service' => $service,
+                'overview' => $overview,
+                'total_amount_of_donation' => $subtotal,
+                'users_id' => $donater,
+                'Beneficiaries_name' => $benename,
+                'users_name' => $username,
+                'charity_id' => $charity_id,
+                'Beneficiaries_id' => $need_id,
+                // Assuming 'users_name' and 'Beneficiaries_name' are not applicable here
+            ]);
+        }
+
+        // Optionally, you can update the status of the need after the purchase
+        $needs->status = 1;
+        $needs->save();
+
+        return response()->json(['message' => 'Purchase completed successfully']);
+    }
 
 
 }
