@@ -117,6 +117,9 @@ Route::get('get_users', [AdminController::class, 'get_all_Users']);
 Route::get('get_donations', [AdminController::class, 'get_all_Donations']);
 
 Route::delete('delete_user/{id}', [AdminController::class, 'delete_Users']);
+
+Route::post('/purchase', [UserController::class, 'makePurchase']);
+
 Route::post('/donate', [UserController::class,'makeDonation']);
 ////////////////////////
 Route::post('/create-payment/{amount}', [PaymentController::class, 'createPayment']);
@@ -137,6 +140,8 @@ Route::get('/archive-count', [AdminController::class, 'getArchiveCount']);
 Route::get('get_charities', [AdminController::class, 'get_all_Charities']);
 Route::get('get_users', [AdminController::class, 'get_all_Users']);
 Route::delete('delete_user/{id}', [AdminController::class, 'delete_Users']);
+Route::get('get_user_messages/{user_id}', [UserController::class, 'get_user_messages']);
+Route::post('send_message', [CharitesController::class, 'send_message']);
 
 
 
@@ -152,6 +157,9 @@ Route::group([
     Route::post('me', [AuthController::class,'me']);
     Route::post('direct', [AuthController::class,'direct']);
     Route::delete('delete_user/{id}',[UserController::class,'delete_user']);
+    
+    Route::put('update_status/{id}', [AdminController::class, 'update_status']);
+
     Route::put('update_user/{id}',[UserController::class,'update_user']);
     Route::post('update_password',[UserController::class,'changePassword']);
 });
