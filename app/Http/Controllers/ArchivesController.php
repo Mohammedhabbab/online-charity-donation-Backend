@@ -23,6 +23,13 @@ class ArchivesController extends Controller
         return response()->json(['message' => 'Record search successfully', 'data' => $record], 200); 
         }
 
-  
+    function getNeedyAndNeedsCountByCharity($users_id)
+    {
+        $arch = Archives::where('charity_id', $users_id)
+            ->get();
+
+        return response()->json(['' => $arch], 200);
+    }
+   
 
 }

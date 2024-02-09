@@ -140,6 +140,8 @@ Route::get('/archive-count', [AdminController::class, 'getArchiveCount']);
 Route::get('get_charities', [AdminController::class, 'get_all_Charities']);
 Route::get('get_users', [AdminController::class, 'get_all_Users']);
 Route::delete('delete_user/{id}', [AdminController::class, 'delete_Users']);
+Route::get('get_user_messages/{user_id}', [UserController::class, 'get_user_messages']);
+Route::post('send_message', [CharitesController::class, 'send_message']);
 
 
 

@@ -138,8 +138,9 @@ class AdminController extends Controller
 
     public function get_all_Beneficiaries()
     {
-        $data = Beneficiaries::all(); // Replace YourModel with the actual model name
-
+        
+        $data = Beneficiaries::orderByDesc('priority')->get();
+        //$data = Beneficiaries::orderByDesc('priority')->get();
         return response()->json($data, 200);
     }
 
